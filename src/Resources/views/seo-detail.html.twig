@@ -1,0 +1,41 @@
+</dd>
+</div>
+
+<div class="data-row field-seo"><dt>Titre</dt><dd>{{ field.value.title ?: include(ea.templatePath('label/null')) }}</dd></div>
+<div class="data-row field-seo"><dt>Couverture</dt><dd>
+        {% if field.value.cover %}
+            {% include '@EasyMedia/admin/field/easy-media.html.twig' with {'field': {'value': field.value.cover, 'uniqueId': field.uniqueId, 'label': "Couverture"}} %}
+        {% else %}
+            {{ include(ea.templatePath('label/null')) }}
+        {% endif %}
+    </dd></div>
+<div class="data-row field-seo"><dt>URL canonique</dt><dd>
+        {% if field.value.cannonical %}
+            <a href="{{ field.value.cannonical }}" target="_blank" rel="noopener noreferrer">{{ field.value.cannonical }}</a>
+        {% else %}
+            {{ include(ea.templatePath('label/null')) }}
+        {% endif %}
+    </dd></div>
+<div class="data-row field-seo"><dt>Description</dt><dd>{{ field.value.description ?: include(ea.templatePath('label/null')) }}</dd></div>
+<div class="data-row field-seo"><dt>Mots-clés</dt><dd>{{ field.value.keywords ?: include(ea.templatePath('label/null')) }}</dd></div>
+<div class="data-row field-seo"><dt>Clé de la page</dt><dd>{{ field.value.key ?: include(ea.templatePath('label/null')) }}</dd></div>
+<div class="data-row field-seo"><dt>Robots</dt><dd>{{ field.value.robots ? field.value.robots|join(", ") : include(ea.templatePath('label/null')) }}</dd></div>
+
+<div class="data-row field-seo field-boolean"><dt>Sitemap</dt><dd>
+        <span class="badge {{ field.value.sitemap == true ? 'badge-boolean-true' : 'badge-boolean-false' }}">
+            {{ (field.value.sitemap == true ? 'label.true' : 'label.false')|trans({}, "EasyAdminBundle") }}
+        </span>
+    </dd></div>
+
+
+<div class="data-row field-seo">
+<dd>
+
+
+<style>
+    dl.datalist > .field-seo:first-of-type{display: none}
+    dl.datalist > .field-seo:nth-child(2) {
+        box-shadow: inset 0 -1px var(--datalist-border-color),inset 0 1px var(--datalist-border-color);
+    }
+    dl.datalist > .field-seo:last-of-type{display: none}
+</style>

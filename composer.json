@@ -1,0 +1,12 @@
+{
+    "name": "agence-adeliom/easy-seo-bundle",
+    "type": "symfony-bundle",
+    "require": {
+        "presta/sitemap-bundle": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Adeliom\\EasySeoBundle\\": "src/"
+        }
+    }
+}
