@@ -5,7 +5,7 @@ namespace Adeliom\EasySeoBundle\Twig;
 
 use Adeliom\EasyBlogBundle\Event\EasyBlogCategoryEvent;
 use Adeliom\EasySeoBundle\Entity\SEO;
-use Adeliom\EasySeoBundle\Services\BreadCrumbCollection;
+use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
 use League\Flysystem\FileAttributes;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -34,7 +34,7 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
     protected $titleConfig;
     protected $breadcrumbConfig;
 
-    public function __construct(Environment $twig, EventDispatcherInterface $eventDispatcher, BreadCrumbCollection $breadcrumb, $titleConfig, $breadcrumbConfig)
+    public function __construct(Environment $twig, EventDispatcherInterface $eventDispatcher, BreadcrumbCollection $breadcrumb, $titleConfig, $breadcrumbConfig)
     {
         $this->twig = $twig;
         $this->eventDispatcher = $eventDispatcher;
