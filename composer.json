@@ -1,6 +1,7 @@
 {
     "name": "agence-adeliom/easy-seo-bundle",
     "type": "symfony-bundle",
+    "version": "1.0.0",
     "description": "Symfony SEO bundle for EasyAdmin",
     "keywords": ["symfony", "SEO", "sitemap", "breadcrumb", "metadata", "easyadmin"],
     "homepage": "https://github.com/agence-adeliom/easy-seo-bundle",
