@@ -24,6 +24,13 @@ use Twig\TwigFunction;
 
 class EasySeoExtension extends AbstractExtension implements GlobalsInterface
 {
+
+    public const MIN_TITLE_LENGTH = 30;
+    public const MAX_TITLE_LENGTH = 65;
+
+    public const MIN_DESCRITION_LENGTH = 120;
+    public const MAX_DESCRITION_LENGTH = 155;
+
     /**
      * @var Environment
      */

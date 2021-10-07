@@ -20,3 +20,12 @@ services:
 
   Adeliom\EasySeoBundle\Form\SeoType:
     public: true
+
+  Adeliom\EasySeoBundle\DataCollector\SeoCollector:
+    arguments:
+      - '@easy_seo.breadcrumb'
+      - '%easy_seo.title%'
+    tags:
+      - name: data_collector
+        template: '@EasySeo/profiler/collector.html.twig'
+        id: Adeliom\EasySeoBundle\DataCollector\SeoCollector
