@@ -113,7 +113,7 @@
 
     <h3>Informations</h3>
     <table>
-        {% if collector.title is not empty %}
+        {% if collector.title is defined and collector.title is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Title</th>
                 <td>{{ collector.title['value']|nl2br|raw }}</td>
@@ -121,42 +121,42 @@
         {% endif %}
 
 
-        {% if collector.description is not empty %}
+        {% if collector.description is defined and collector.description is not empty %}
             <tr>
                 <th>Description</th>
                 <td>{{ collector.description['value']|nl2br|raw }}</td>
             </tr>
         {% endif %}
 
-        {% if collector.keywords is not empty %}
+        {% if collector.keywords is defined and collector.keywords is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Keywords</th>
                 <td>{{ collector.keywords['value'] }}</td>
             </tr>
         {% endif %}
 
-        {% if collector.robots is not empty %}
+        {% if collector.robots is defined and collector.robots is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Robots</th>
                 <td>{{ collector.robots['value'] }}</td>
             </tr>
         {% endif %}
 
-        {% if collector.pageKey is not empty %}
+        {% if collector.pageKey is defined and collector.pageKey is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Key</th>
                 <td>{{ collector.pageKey['value'] }}</td>
             </tr>
         {% endif %}
 
-        {% if collector.canonical is not empty %}
+        {% if collector.canonical is defined and collector.canonical is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Canonical URL</th>
                 <td>{{ collector.canonical['value'] }}</td>
             </tr>
         {% endif %}
 
-        {% if collector.cover is not empty %}
+        {% if collector.cover is defined and collector.cover is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Cover</th>
                 <td><a href="{{ collector.cover['value'] }}" target="_blank" rel="noopener">{{ collector.cover['value'] }}</a></td>
@@ -164,7 +164,7 @@
         {% endif %}
 
 
-        {% if collector.breadcrumb is not empty %}
+        {% if collector.breadcrumb is defined and collector.breadcrumb is not empty %}
             <tr>
                 <th class="font-normal text-small text-bold">Breadcrumb</th>
                 <td>

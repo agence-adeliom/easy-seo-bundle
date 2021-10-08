@@ -54,7 +54,7 @@ class ArticleCrudController extends AbstractCrudController
 }
 ```
 #### Twig template
-```twig
+```php
 # Render the title
 {{- seo_title(object.seo) -}}
 
