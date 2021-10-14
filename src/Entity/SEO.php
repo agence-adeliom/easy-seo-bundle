@@ -35,7 +35,7 @@ class SEO {
 
     /**
      * @var string
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="easy_media_type", nullable=true)
      */
     public $cover;
 
