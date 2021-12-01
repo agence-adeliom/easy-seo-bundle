@@ -110,6 +110,22 @@ $dispatcher->addListener('easyseo.breadcrumb', function (Event $event) {
 });
 ```
 
+## Troubleshooting
+
+- ```Adeliom\EasySeoBundle\Entity\SEO is not a valid entity or mapped super class.```
+
+In case of using php 8, old php 7 annotations are not supported by default, add those lines in your doctrine package configuration file :
+```yml
+doctrine:
+    orm:
+        mappings:
+            EasySeoBundle:
+              type: annotation
+              alias: Adeliom\EasySeoBundle
+              prefix: Adeliom\EasySeoBundle\Entity
+              dir: "src/Entity"
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
