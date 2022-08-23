@@ -11,8 +11,8 @@ trait EntitySeoTrait {
      * The customer billing address.
      *
      * @var SEO
-     * @ORM\Embedded(class="Adeliom\EasySeoBundle\Entity\SEO")
      */
+    #[ORM\Embedded(class: 'Adeliom\EasySeoBundle\Entity\SEO')]
     protected $seo;
 
 
