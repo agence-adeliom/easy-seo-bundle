@@ -1,7 +1,7 @@
 {
     "name": "agence-adeliom/easy-seo-bundle",
     "type": "symfony-bundle",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Symfony SEO bundle for EasyAdmin",
     "keywords": ["symfony", "SEO", "sitemap", "breadcrumb", "metadata", "easyadmin"],
     "homepage": "https://github.com/agence-adeliom/easy-seo-bundle",
@@ -17,19 +17,19 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4|^8.0|^8.1",
         "ext-json": "*",
-        "symfony/config": "^4.4 || ^5.2",
-        "symfony/dependency-injection": "^4.4 || ^5.2",
+        "symfony/config": "^4.4 || ^5.2 || ^6.0",
+        "symfony/dependency-injection": "^4.4 || ^5.2 || ^6.0",
         "symfony/deprecation-contracts": "^2.2 || ^v3.0.0",
-        "symfony/event-dispatcher": "^4.4 || ^5.2",
-        "symfony/framework-bundle": "^4.4 || ^5.2",
-        "symfony/http-kernel": "^4.4 || ^5.2",
-        "symfony/options-resolver": "^4.4 || ^5.2",
-        "symfony/property-access": "^4.4 || ^5.2",
+        "symfony/event-dispatcher": "^4.4 || ^5.2 || ^6.0",
+        "symfony/framework-bundle": "^4.4 || ^5.2 || ^6.0",
+        "symfony/http-kernel": "^4.4 || ^5.2 || ^6.0",
+        "symfony/options-resolver": "^4.4 || ^5.2 || ^6.0",
+        "symfony/property-access": "^4.4 || ^5.2 || ^6.0",
         "easycorp/easyadmin-bundle": "^3.4 || ^v4.0.0",
-        "agence-adeliom/easy-common-bundle": "^1.0",
-        "agence-adeliom/easy-media-bundle": "^1.0",
+        "agence-adeliom/easy-common-bundle": "*",
+        "agence-adeliom/easy-media-bundle": "*",
         "presta/sitemap-bundle": "^3.0"
     },
     "autoload": {
