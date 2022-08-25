@@ -1,61 +1,50 @@
 <?php
 
-
 namespace Adeliom\EasySeoBundle\Twig;
 
-use Adeliom\EasyBlogBundle\Event\EasyBlogCategoryEvent;
 use Adeliom\EasySeoBundle\Entity\SEO;
 use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
-use League\Flysystem\FileAttributes;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Local\LocalFilesystemAdapter;
-use League\MimeTypeDetection\FinfoMimeTypeDetector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\Markup;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class EasySeoExtension extends AbstractExtension implements GlobalsInterface
 {
-
+    /**
+     * @var int
+     */
     public const MIN_TITLE_LENGTH = 30;
-    public const MAX_TITLE_LENGTH = 65;
-
-    public const MIN_DESCRITION_LENGTH = 120;
-    public const MAX_DESCRITION_LENGTH = 155;
 
     /**
-     * @var Environment
+     * @var int
      */
-    protected $twig;
-    protected $eventDispatcher;
-    protected $breadcrumb;
+    public const MAX_TITLE_LENGTH = 65;
 
-    protected $titleConfig;
-    protected $breadcrumbConfig;
+    /**
+     * @var int
+     */
+    public const MIN_DESCRITION_LENGTH = 120;
 
-    public function __construct(Environment $twig, EventDispatcherInterface $eventDispatcher, BreadcrumbCollection $breadcrumb, $titleConfig, $breadcrumbConfig)
+    /**
+     * @var int
+     */
+    public const MAX_DESCRITION_LENGTH = 155;
+
+
+    public function __construct(protected Environment $twig, protected EventDispatcherInterface $eventDispatcher, protected BreadcrumbCollection $breadcrumb, protected $titleConfig, protected $breadcrumbConfig)
     {
-        $this->twig = $twig;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->breadcrumb = $breadcrumb;
-        $this->titleConfig = $titleConfig;
-        $this->breadcrumbConfig = $breadcrumbConfig;
     }
 
     public function getFunctions()
     {
         return [
-            new TwigFunction('seo_metas', [$this, 'renderSeoMetas']),
-            new TwigFunction('seo_title', [$this, 'renderSeoTitle']),
-            new TwigFunction('seo_breadcrumb', [$this, 'renderBreadcrumb']),
+            new TwigFunction('seo_metas', \Closure::fromCallable(fn(\Adeliom\EasySeoBundle\Entity\SEO $seo) => $this->renderSeoMetas($seo))),
+            new TwigFunction('seo_title', \Closure::fromCallable(fn($seo) => $this->renderSeoTitle($seo))),
+            new TwigFunction('seo_breadcrumb', \Closure::fromCallable(fn() => $this->renderBreadcrumb())),
         ];
     }
 
@@ -66,6 +55,7 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
             'easy_seo_breadcrumb' => $this->breadcrumbConfig,
         ];
     }
+
     public function renderBreadcrumb()
     {
         $event = new GenericEvent(null, ['items' => $this->breadcrumb->getItems() ]);
@@ -76,16 +66,18 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
         return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ["data" => $result->getArgument('items')]), 'UTF-8');
     }
 
-    public function renderSeoTitle($seo){
+    public function renderSeoTitle($seo)
+    {
         $title = "";
-        if(is_string($seo)){
+        if (is_string($seo)) {
             $title = $seo;
         }
-        if($seo instanceof SEO){
+
+        if ($seo instanceof SEO) {
             $title = $seo->title;
         }
 
-        if(!empty($this->titleConfig["suffix"])){
+        if (!empty($this->titleConfig["suffix"])) {
             $title = sprintf("%s %s %s", $title, $this->titleConfig["separator"], $this->titleConfig["suffix"]);
         }
 
@@ -97,7 +89,8 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
         return $result->getArgument('title') ?: $title;
     }
 
-    public function renderSeoMetas(SEO $seo){
+    public function renderSeoMetas(SEO $seo)
+    {
         $event = new GenericEvent(null, ['datas' => $seo ]);
         /**
          * @var GenericEvent $result;

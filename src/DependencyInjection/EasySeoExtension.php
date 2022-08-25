@@ -2,7 +2,6 @@
 
 namespace Adeliom\EasySeoBundle\DependencyInjection;
 
-use Adeliom\EasySeoBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -16,14 +15,14 @@ class EasySeoExtension extends Extension
         $config        = $this->processConfiguration($configuration, $configs);
 
         foreach ($config as $key => $value) {
-            $container->setParameter('easy_seo.'.$key, $value);
+            $container->setParameter('easy_seo.' . $key, $value);
         }
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'easy_seo';
     }

@@ -2,12 +2,9 @@
 
 namespace Adeliom\EasySeoBundle\Admin\Field;
 
-
 use Adeliom\EasySeoBundle\Form\SeoType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 final class SEOField implements FieldInterface
 {
