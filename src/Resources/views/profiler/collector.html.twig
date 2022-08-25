@@ -1,0 +1,177 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{# templates/data_collector/seo_collector.html.twig #}
+
+{% block toolbar %}
+    {% set icon %}
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+        </svg>
+        <span class="sf-toolbar-value">
+            Easy SEO
+        </span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Title length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_TITLE_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_TITLE_LENGTH') }})</b>
+            {% set status = collector.title['status'] is defined ? collector.title['status'] : 'red' %}
+            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
+                {% if collector.title is not empty %}
+                    {{ collector.title['size'] }}
+                {% else %}
+                    <span>Title is empty.</span>
+                {% endif %}
+            </span>
+        </div>
+
+        {% if collector.title is not empty %}
+            <div class="sf-toolbar-info-piece">
+                <b>Title</b>
+                <span>{{ collector.title['value']|nl2br|raw }}</span>
+            </div>
+        {% endif %}
+
+        <div class="sf-toolbar-info-piece">
+            <b>Description length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_DESCRITION_LENGTH') }})</b>
+            {% set status = collector.description['status'] is defined ? collector.description['status'] : 'red' %}
+            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
+                {% if collector.description is not empty %}
+                    {{ collector.description['size'] }}
+                {% else %}
+                    <span>Description is empty.</span>
+                {% endif %}
+            </span>
+        </div>
+
+        {% if collector.description is not empty %}
+            <div class="sf-toolbar-info-piece">
+                <b>Description</b>
+                <span>{{ collector.description['value']|nl2br|raw }}</span>
+            </div>
+        {% endif %}
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+
+{% block menu %}
+    <span class="label ">
+        <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+        </span>
+        <strong>Easy SEO</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Easy SEO</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            {% set status = collector.title['metric'] is defined ? collector.title['metric'] : 'status-error' %}
+            <span class="value">
+                {% if collector.title is not empty %}
+                    {{ collector.title['size'] }} <span class="unit">chars</span>
+                {% else %}
+                    Title is empty.
+                {% endif %}
+            </span>
+            <span class="label">Title length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_TITLE_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_TITLE_LENGTH') }})</span>
+        </div>
+
+        <div class="metric">
+            {% set status = collector.description['metric'] is defined ? collector.description['metric'] : 'status-error' %}
+            <span class="value">
+                {% if collector.description is not empty %}
+                    {{ collector.description['size'] }} <span class="unit">chars</span>
+                {% else %}
+                    Description is empty.
+                {% endif %}
+            </span>
+            <span class="label">Description length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_DESCRITION_LENGTH') }})</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">
+                {{ collector.config['separator'] }}
+            </span>
+            <span class="label">Title separator</span>
+        </div>
+
+        <div class="metric">
+            <span class="value">
+                {{ collector.config['suffix'] }}
+            </span>
+            <span class="label">Title suffix</span>
+        </div>
+
+    </div>
+
+    <h3>Informations</h3>
+    <table>
+        {% if collector.title is defined and collector.title is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Title</th>
+                <td>{{ collector.title['value']|nl2br|raw }}</td>
+            </tr>
+        {% endif %}
+
+
+        {% if collector.description is defined and collector.description is not empty %}
+            <tr>
+                <th>Description</th>
+                <td>{{ collector.description['value']|nl2br|raw }}</td>
+            </tr>
+        {% endif %}
+
+        {% if collector.keywords is defined and collector.keywords is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Keywords</th>
+                <td>{{ collector.keywords['value'] }}</td>
+            </tr>
+        {% endif %}
+
+        {% if collector.robots is defined and collector.robots is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Robots</th>
+                <td>{{ collector.robots['value'] }}</td>
+            </tr>
+        {% endif %}
+
+        {% if collector.pageKey is defined and collector.pageKey is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Key</th>
+                <td>{{ collector.pageKey['value'] }}</td>
+            </tr>
+        {% endif %}
+
+        {% if collector.canonical is defined and collector.canonical is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Canonical URL</th>
+                <td>{{ collector.canonical['value'] }}</td>
+            </tr>
+        {% endif %}
+
+        {% if collector.cover is defined and collector.cover is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Cover</th>
+                <td><a href="{{ collector.cover['value'] }}" target="_blank" rel="noopener">{{ collector.cover['value'] }}</a></td>
+            </tr>
+        {% endif %}
+
+
+        {% if collector.breadcrumb is defined and collector.breadcrumb is not empty %}
+            <tr>
+                <th class="font-normal text-small text-bold">Breadcrumb</th>
+                <td>
+                    {{ dump(collector.breadcrumb) }}
+                </td>
+            </tr>
+        {% endif %}
+
+    </table>
+{% endblock %}

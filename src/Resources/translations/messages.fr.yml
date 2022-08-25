@@ -1,0 +1,12 @@
+easy:
+  seo:
+    admin:
+      field:
+        title: Titre
+        cover: Couverture
+        cannonical: URL canonique
+        description: Description
+        keywords: Mots-clés
+        key: Clé de la page
+        robots: Robots
+        sitemap: Inclure dans le sitemap

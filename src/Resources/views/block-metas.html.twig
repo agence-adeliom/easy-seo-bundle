@@ -1,0 +1,30 @@
+{% if data.description %}
+    <meta name="description" content="{{ data.description }}">
+{% endif %}
+{% if data.keywords %}
+    <meta name="keywords" content="{{ data.keywords }}">
+{% endif %}
+{% if data.robots|length %}
+    <meta name="robots" content="{{ data.robots|join(",") }}" />
+{% endif %}
+{% if data.key %}
+    <meta name="page-key" content="{{ data.key }}">
+{% endif %}
+{% if data.cannonical %}
+    <link rel="canonical" href="{{ data.cannonical }}" />
+{% endif %}
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary">
+    <!-- Open Graph data -->
+{% if data.title %}
+    <meta property="og:title" content="{{ data.title }}"/>
+{% endif %}
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ app.request.schemeAndHttpHost ~ app.request.baseUrl ~ app.request.requestUri }}"/>
+{% if data.cover and data.cover|resolve_media %}
+    <meta property="og:image" content="{{ app.request.schemeAndHttpHost ~ app.request.baseUrl ~ data.cover|resolve_media }}"/>
+{% endif %}
+{% if data.description %}
+    <meta property="og:description" content="{{ data.description }}">
+{% endif %}
+
