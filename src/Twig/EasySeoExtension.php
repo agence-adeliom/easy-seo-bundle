@@ -34,17 +34,16 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
      */
     public const MAX_DESCRITION_LENGTH = 155;
 
-
     public function __construct(protected Environment $twig, protected EventDispatcherInterface $eventDispatcher, protected BreadcrumbCollection $breadcrumb, protected $titleConfig, protected $breadcrumbConfig)
     {
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('seo_metas', \Closure::fromCallable(fn(\Adeliom\EasySeoBundle\Entity\SEO $seo) => $this->renderSeoMetas($seo))),
-            new TwigFunction('seo_title', \Closure::fromCallable(fn($seo) => $this->renderSeoTitle($seo))),
-            new TwigFunction('seo_breadcrumb', \Closure::fromCallable(fn() => $this->renderBreadcrumb())),
+            new TwigFunction('seo_metas', \Closure::fromCallable(fn (\Adeliom\EasySeoBundle\Entity\SEO $seo) => $this->renderSeoMetas($seo))),
+            new TwigFunction('seo_title', \Closure::fromCallable(fn ($seo) => $this->renderSeoTitle($seo))),
+            new TwigFunction('seo_breadcrumb', \Closure::fromCallable(fn () => $this->renderBreadcrumb())),
         ];
     }
 
@@ -56,19 +55,20 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
-    public function renderBreadcrumb()
+    public function renderBreadcrumb(): Markup
     {
-        $event = new GenericEvent(null, ['items' => $this->breadcrumb->getItems() ]);
+        $event = new GenericEvent(null, ['items' => $this->breadcrumb->getItems()]);
         /**
          * @var GenericEvent $result;
          */
-        $result = $this->eventDispatcher->dispatch($event, "easyseo.breadcrumb");
-        return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ["data" => $result->getArgument('items')]), 'UTF-8');
+        $result = $this->eventDispatcher->dispatch($event, 'easyseo.breadcrumb');
+
+        return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ['data' => $result->getArgument('items')]), 'UTF-8');
     }
 
-    public function renderSeoTitle($seo)
+    public function renderSeoTitle($seo): string
     {
-        $title = "";
+        $title = '';
         if (is_string($seo)) {
             $title = $seo;
         }
@@ -77,25 +77,27 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
             $title = $seo->title;
         }
 
-        if (!empty($this->titleConfig["suffix"])) {
-            $title = sprintf("%s %s %s", $title, $this->titleConfig["separator"], $this->titleConfig["suffix"]);
+        if (!empty($this->titleConfig['suffix'])) {
+            $title = sprintf('%s %s %s', $title, $this->titleConfig['separator'], $this->titleConfig['suffix']);
         }
 
-        $event = new GenericEvent(null, ['title' => $title ]);
+        $event = new GenericEvent(null, ['title' => $title]);
         /**
          * @var GenericEvent $result;
          */
-        $result = $this->eventDispatcher->dispatch($event, "easyseo.title");
+        $result = $this->eventDispatcher->dispatch($event, 'easyseo.title');
+
         return $result->getArgument('title') ?: $title;
     }
 
-    public function renderSeoMetas(SEO $seo)
+    public function renderSeoMetas(SEO $seo): Markup
     {
-        $event = new GenericEvent(null, ['datas' => $seo ]);
+        $event = new GenericEvent(null, ['datas' => $seo]);
         /**
          * @var GenericEvent $result;
          */
-        $result = $this->eventDispatcher->dispatch($event, "easyseo.render_meta");
-        return new Markup($this->twig->render('@EasySeo/block-metas.html.twig', ["data" => ($result->getArgument('datas') ?: $seo)]), 'UTF-8');
+        $result = $this->eventDispatcher->dispatch($event, 'easyseo.render_meta');
+
+        return new Markup($this->twig->render('@EasySeo/block-metas.html.twig', ['data' => ($result->getArgument('datas') ?: $seo)]), 'UTF-8');
     }
 }
