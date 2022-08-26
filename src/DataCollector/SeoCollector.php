@@ -2,35 +2,54 @@
 
 namespace Adeliom\EasySeoBundle\DataCollector;
 
-
 use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
 use Adeliom\EasySeoBundle\Twig\EasySeoExtension;
 use Symfony\Bundle\FrameworkBundle\DataCollector\AbstractDataCollector;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use function Symfony\Component\String\u;
 
+use function Symfony\Component\String\u;
 
 final class SeoCollector extends AbstractDataCollector
 {
+    /**
+     * @var int
+     */
     private const MAX_PANEL_WIDTH = 50;
+
+    /**
+     * @var string
+     */
     private const CLASS_ERROR = 'red';
+
+    /**
+     * @var string
+     */
     private const CLASS_WARNING = 'yellow';
+
+    /**
+     * @var string
+     */
     private const CLASS_OK = 'green';
 
+    /**
+     * @var string
+     */
     private const METRIC_CLASS_ERROR = 'status-error';
+
+    /**
+     * @var string
+     */
     private const METRIC_CLASS_WARNING = 'status-warning';
+
+    /**
+     * @var string
+     */
     private const METRIC_CLASS_OK = 'status-sucess';
 
-    /** @var BreadcrumbCollection */
-    protected $breadcrumb;
-    protected $config;
-
-    public function __construct(BreadcrumbCollection $breadcrumb, $config)
+    public function __construct(protected BreadcrumbCollection $breadcrumb, protected $config)
     {
-        $this->breadcrumb = $breadcrumb;
-        $this->config = $config;
     }
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
@@ -71,43 +90,42 @@ final class SeoCollector extends AbstractDataCollector
         $meta = $crawler->filterXPath('//meta[@name="keywords"]');
         if ($meta->count() > 0) {
             $this->data['keywords'] = [
-                'value' => u((string) $meta->attr('content'))
+                'value' => u((string) $meta->attr('content')),
             ];
         }
 
         $meta = $crawler->filterXPath('//meta[@name="robots"]');
         if ($meta->count() > 0) {
             $this->data['robots'] = [
-                'value' => u((string) $meta->attr('content'))
+                'value' => u((string) $meta->attr('content')),
             ];
         }
 
         $meta = $crawler->filterXPath('//meta[@name="page-key"]');
         if ($meta->count() > 0) {
             $this->data['pageKey'] = [
-                'value' => u((string) $meta->attr('content'))
+                'value' => u((string) $meta->attr('content')),
             ];
         }
 
         $meta = $crawler->filterXPath('//link[@rel="canonical"]');
         if ($meta->count() > 0) {
             $this->data['canonical'] = [
-                'value' => u((string) $meta->attr('href'))
+                'value' => u((string) $meta->attr('href')),
             ];
         }
 
         $meta = $crawler->filterXPath('//meta[@property="og:image"]');
         if ($meta->count() > 0) {
             $this->data['cover'] = [
-                'value' => u((string) $meta->attr('content'))
+                'value' => u((string) $meta->attr('content')),
             ];
         }
-
     }
 
     private function getTitleClass(int $size): string
     {
-        if ($size === 0) {
+        if (0 === $size) {
             return self::CLASS_ERROR;
         }
 
@@ -116,7 +134,7 @@ final class SeoCollector extends AbstractDataCollector
 
     private function getTitleStatusClass(int $size): string
     {
-        if ($size === 0) {
+        if (0 === $size) {
             return self::METRIC_CLASS_ERROR;
         }
 
@@ -125,7 +143,7 @@ final class SeoCollector extends AbstractDataCollector
 
     private function getDescriptionClass(int $size): string
     {
-        if ($size === 0) {
+        if (0 === $size) {
             return self::CLASS_ERROR;
         }
 
@@ -134,7 +152,7 @@ final class SeoCollector extends AbstractDataCollector
 
     private function getDescriptionStatusClass(int $size): string
     {
-        if ($size === 0) {
+        if (0 === $size) {
             return self::METRIC_CLASS_ERROR;
         }
 
@@ -156,7 +174,6 @@ final class SeoCollector extends AbstractDataCollector
     {
         return $this->data['description'] ?? [];
     }
-
 
     public function __get($name)
     {

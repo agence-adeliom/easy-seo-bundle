@@ -4,8 +4,32 @@
 
 # Easy SEO Bundle
 
+## Versions
 
-## Installation
+| Repository Branch | Version | Symfony Compatibility | PHP Compatibility | Status                     |
+|-------------------|---------|-----------------------|-------------------|----------------------------|
+| `2.x`             | `2.x`   | `5.4`, and `6.x`      | `8.0.2` or higher | New features and bug fixes |
+| `1.x`             | `1.x`   | `4.4`, and `5.x`      | `7.2.5` or higher | No longer maintained       |
+
+
+## Installation with Symfony Flex
+
+Add our recipes endpoint
+
+```json
+{
+  "extra": {
+    "symfony": {
+      "endpoint": [
+        "https://api.github.com/repos/agence-adeliom/symfony-recipes/contents/index.json?ref=flex/main",
+        ...
+        "flex://defaults"
+      ],
+      "allow-contrib": true
+    }
+  }
+}
+```
 
 Install with composer
 
@@ -108,22 +132,6 @@ $dispatcher->addListener('easyseo.breadcrumb', function (Event $event) {
     // Set breadcrumb's items
     $event->setArgument("items", $items);
 });
-```
-
-## Troubleshooting
-
-- ```Adeliom\EasySeoBundle\Entity\SEO is not a valid entity or mapped super class.```
-
-In case of using php 8, old php 7 annotations are not supported by default, add those lines in your doctrine package configuration file :
-```yml
-doctrine:
-    orm:
-        mappings:
-            EasySeoBundle:
-              type: annotation
-              alias: Adeliom\EasySeoBundle
-              prefix: Adeliom\EasySeoBundle\Entity
-              dir: "src/Entity"
 ```
 
 ## License
