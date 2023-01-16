@@ -23,6 +23,12 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('enable_profiler')->defaultValue('%kernel.debug%')->end()
+                ->arrayNode('ignore_profiler')
+                    ->defaultValue([
+                        '^/admin*'
+                    ])->scalarPrototype()->end()
+                ->end()
                 ->arrayNode('title')
                     ->addDefaultsIfNotSet()
                     ->children()

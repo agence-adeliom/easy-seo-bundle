@@ -25,6 +25,8 @@ services:
     arguments:
       - '@easy_seo.breadcrumb'
       - '%easy_seo.title%'
+      - '%easy_seo.enable_profiler%'
+      - '%easy_seo.ignore_profiler%'
     tags:
       - name: data_collector
         template: '@EasySeo/profiler/collector.html.twig'

@@ -54,6 +54,9 @@ easy_seo:
     current_class: 'active'
     separator: '>'
     separator_class: 'breadcrumb-separator'
+  enable_profiler: '%kernel.debug%'
+  ignore_profiler: 
+    - '^/admin*'
 ```
 
 ### Add SEO to your entity
