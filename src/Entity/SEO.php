@@ -11,37 +11,37 @@ class SEO implements \Stringable
      * @var string
      */
     #[ORM\Column]
-    public $title;
+    public string $title;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
     public ?string $description = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(nullable: true)]
-    public $keywords;
+    public ?string $keywords;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(nullable: true)]
-    public $cannonical;
+    public ?string $cannonical;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(type: 'easy_media_type', nullable: true)]
-    public $cover;
+    public ?string $cover;
 
     /**
-     * @var string
+     * @var string|null
      */
     #[ORM\Column(nullable: true)]
-    public $key;
+    public ?string $key;
 
     /**
      * @var bool
@@ -50,10 +50,10 @@ class SEO implements \Stringable
     public ?bool $sitemap = true;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::JSON)]
-    public $robots = [];
+    public array $robots = [];
 
     public function __toString(): string
     {
