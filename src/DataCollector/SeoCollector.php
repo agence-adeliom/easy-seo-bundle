@@ -48,16 +48,33 @@ final class SeoCollector extends AbstractDataCollector
      */
     private const METRIC_CLASS_OK = 'status-sucess';
 
-    public function __construct(protected BreadcrumbCollection $breadcrumb, protected $config)
+    public function __construct(protected BreadcrumbCollection $breadcrumb, protected ?array $config, protected bool $enabled = false, protected array $ignore = [])
     {
     }
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
+        $this->data['config'] = $this->config;
+        $this->data['enabled'] = $this->enabled;
+        $this->data['ignored'] = false;
+
+        if (!$this->enabled) {
+            return;
+        }
+
+        $uri = $request->getPathInfo();
+        $match = array_filter($this->ignore, static function ($ignore) use ($uri) {
+            return preg_match('{'.$ignore.'}', rawurldecode($uri));
+        });
+
+        if (!empty($match) || in_array($request->attributes->get('_route'), $this->ignore)) {
+            $this->data['ignored'] = true;
+            return;
+        }
+
         $crawler = new Crawler((string) $response->getContent());
 
         $this->data['breadcrumb'] = $this->breadcrumb->getItems();
-        $this->data['config'] = $this->config;
 
         // Title ———————————————————————————————————————————————————————————————
         $titleTag = $crawler->filter('title');

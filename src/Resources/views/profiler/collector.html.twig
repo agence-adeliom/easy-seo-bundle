@@ -12,45 +12,47 @@
         </span>
     {% endset %}
 
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>Title length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_TITLE_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_TITLE_LENGTH') }})</b>
-            {% set status = collector.title['status'] is defined ? collector.title['status'] : 'red' %}
-            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
-                {% if collector.title is not empty %}
-                    {{ collector.title['size'] }}
-                {% else %}
-                    <span>Title is empty.</span>
-                {% endif %}
-            </span>
-        </div>
-
-        {% if collector.title is not empty %}
+    {% if collector.enabled and not collector.ignored %}
+        {% set text %}
             <div class="sf-toolbar-info-piece">
-                <b>Title</b>
-                <span>{{ collector.title['value']|nl2br|raw }}</span>
+                <b>Title length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_TITLE_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_TITLE_LENGTH') }})</b>
+                {% set status = collector.title['status'] is defined ? collector.title['status'] : 'red' %}
+                <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
+                    {% if collector.title is not empty %}
+                        {{ collector.title['size'] }}
+                    {% else %}
+                        <span>Title is empty.</span>
+                    {% endif %}
+                </span>
             </div>
-        {% endif %}
 
-        <div class="sf-toolbar-info-piece">
-            <b>Description length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_DESCRITION_LENGTH') }})</b>
-            {% set status = collector.description['status'] is defined ? collector.description['status'] : 'red' %}
-            <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
-                {% if collector.description is not empty %}
-                    {{ collector.description['size'] }}
-                {% else %}
-                    <span>Description is empty.</span>
-                {% endif %}
-            </span>
-        </div>
+            {% if collector.title is not empty %}
+                <div class="sf-toolbar-info-piece">
+                    <b>Title</b>
+                    <span>{{ collector.title['value']|nl2br|raw }}</span>
+                </div>
+            {% endif %}
 
-        {% if collector.description is not empty %}
             <div class="sf-toolbar-info-piece">
-                <b>Description</b>
-                <span>{{ collector.description['value']|nl2br|raw }}</span>
+                <b>Description length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_DESCRITION_LENGTH') }})</b>
+                {% set status = collector.description['status'] is defined ? collector.description['status'] : 'red' %}
+                <span class="sf-toolbar-status sf-toolbar-status-{{ status }}">
+                    {% if collector.description is not empty %}
+                        {{ collector.description['size'] }}
+                    {% else %}
+                        <span>Description is empty.</span>
+                    {% endif %}
+                </span>
             </div>
-        {% endif %}
-    {% endset %}
+
+            {% if collector.description is not empty %}
+                <div class="sf-toolbar-info-piece">
+                    <b>Description</b>
+                    <span>{{ collector.description['value']|nl2br|raw }}</span>
+                </div>
+            {% endif %}
+        {% endset %}
+    {% endif %}
 
     {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
 {% endblock %}
@@ -71,6 +73,19 @@
     <h2>Easy SEO</h2>
 
     <div class="metrics">
+
+        <div class="metric">
+            <span class="value">
+            {% if collector.enabled and not collector.ignored %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 12 12"><path fill="#5E976E" d="M12 3.1c0 .4-.1.8-.4 1.1L5.9 9.8c-.3.3-.6.4-1 .4s-.7-.1-1-.4L.4 6.3C.1 6 0 5.6 0 5.2c0-.4.2-.7.4-.9.2-.3.6-.4.9-.4.4 0 .8.1 1.1.4l2.5 2.5 4.7-4.7c.3-.3.7-.4 1-.4.4 0 .7.2.9.4.3.3.5.6.5 1z"></path></svg>
+            {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 12 12"><path fill="#999" d="M10.4 8.4L8 6l2.4-2.4c.8-.8.7-1.6.2-2.2-.6-.5-1.4-.6-2.2.2L6 4 3.6 1.6C2.8.8 2 .9 1.4 1.4c-.5.6-.6 1.4.2 2.2L4 6 1.6 8.4c-.8.8-.7 1.6-.2 2.2.6.6 1.4.6 2.2-.2L6 8l2.4 2.4c.8.8 1.6.7 2.2.2.5-.6.6-1.4-.2-2.2z"></path></svg>
+            {% endif %}
+            </span>
+            <span class="label">Profiling</span>
+        </div>
+
+        {% if collector.enabled and not collector.ignored %}
         <div class="metric">
             {% set status = collector.title['metric'] is defined ? collector.title['metric'] : 'status-error' %}
             <span class="value">
@@ -94,6 +109,7 @@
             </span>
             <span class="label">Description length ({{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MIN_DESCRITION_LENGTH') }} > {{ constant('Adeliom\\EasySeoBundle\\Twig\\EasySeoExtension::MAX_DESCRITION_LENGTH') }})</span>
         </div>
+        {% endif %}
 
         <div class="metric">
             <span class="value">
@@ -110,7 +126,7 @@
         </div>
 
     </div>
-
+    {% if collector.enabled and not collector.ignored %}
     <h3>Informations</h3>
     <table>
         {% if collector.title is defined and collector.title is not empty %}
@@ -174,4 +190,5 @@
         {% endif %}
 
     </table>
+    {% endif %}
 {% endblock %}
