@@ -23,7 +23,7 @@ trait EntitySeoTrait
     /**
      * Set the address where the customer want its billing.
      */
-    public function setSEO(SEO $seo)
+    public function setSEO(SEO $seo): void
     {
         $this->seo = $seo;
     }
