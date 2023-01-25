@@ -2,6 +2,7 @@
 
 namespace Adeliom\EasySeoBundle\Entity;
 
+use Adeliom\EasyMediaBundle\Entity\Media;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
@@ -32,10 +33,10 @@ class SEO implements \Stringable
     public ?string $cannonical;
 
     /**
-     * @var string|null
+     * @var Media|string|null
      */
     #[ORM\Column(type: 'easy_media_type', nullable: true)]
-    public ?string $cover;
+    public Media|string|null $cover;
 
     /**
      * @var string|null
