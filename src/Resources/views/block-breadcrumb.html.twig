@@ -3,10 +3,15 @@
     {% for breadcrumb in data %}
         <li itemprop="itemListElement" class="{{ easy_seo_breadcrumb.item_class }} {{ loop.last ? easy_seo_breadcrumb.current_class : "" }} {{ loop.first ? "item-first" : "" }}" {% if loop.last %}aria-current="page"{% endif %}  itemscope itemtype="http://schema.org/ListItem">
             <meta itemprop="position" content="{{ loop.index }}" />
-            {% set type = loop.last ? "span" : "a" %}
-            <{{ type }} itemprop="item" href="{{ breadcrumb.target }}" class="{{ easy_seo_breadcrumb.link_class }}">
+            {% if loop.last and breadcrumb.target|default(false) %}
+            <span class="{{ easy_seo_breadcrumb.link_class }}">
                 <span itemprop="name">{{ breadcrumb.linkName|trans }}</span>
-            </{{ type }}>
+            </span>
+            {% else %}
+            <a itemprop="item" href="{{ breadcrumb.target }}" class="{{ easy_seo_breadcrumb.link_class }}">
+                <span itemprop="name">{{ breadcrumb.linkName|trans }}</span>
+            </a>
+            {% endif %}
         </li>
     {% endfor %}
     </ol>
