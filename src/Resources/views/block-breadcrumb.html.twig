@@ -8,7 +8,7 @@
                 <span itemprop="name">{{ breadcrumb.linkName|trans }}</span>
             </span>
             {% else %}
-            <a itemprop="item" href="{{ breadcrumb.target }}" class="{{ easy_seo_breadcrumb.link_class }}">
+            <a itemprop="item" href="{{ loop.first ? breadcrumb.target | replace({'//': '/'}) : breadcrumb.target }}" class="{{ easy_seo_breadcrumb.link_class }}">
                 <span itemprop="name">{{ breadcrumb.linkName|trans }}</span>
             </a>
             {% endif %}
