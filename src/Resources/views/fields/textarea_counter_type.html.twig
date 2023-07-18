@@ -1,0 +1,39 @@
+{% block textarea_counter_widget %}
+    {% set hasLimit = form.vars.attr.limit is defined and form.vars.attr.limit > 0 %}
+    {% set limit = 0 %}
+
+    <textarea name="{{ form.vars.full_name }}" id="{{ form.vars.id }}" class="form-control">
+        {{- form.vars.value -}}
+    </textarea>
+
+    <small class="form-help">
+        <span id="{{ form.vars.id }}_length">{{ form.vars.value|length }}</span>
+        {% if hasLimit %}
+            {% set limit = form.vars.attr.limit %}
+            / {{ form.vars.attr.limit }}
+        {% endif %}
+        caractères
+    </small>
+
+    <script type="application/javascript">
+        var data{{ form.vars.id }} = {
+            field: document.getElementById('{{ form.vars.id }}'),
+            lengthContainer: document.getElementById('{{ form.vars.id }}_length'),
+            initialLength: {{ form.vars.value|length }},
+            previousValue: '{{ form.vars.value }}'
+        }
+
+        function handleValue{{ form.vars.id }}(event) {
+            if (event.target.value.length >= 0 && (event.target.value.length <= {{ limit }} || {{ limit }} === 0)) {
+                data{{ form.vars.id }}.lengthContainer.innerText = event.target.value.length;
+                data{{ form.vars.id }}.previousValue = event.target.value;
+            } else {
+                data{{ form.vars.id }}.field.value = data{{ form.vars.id }}.previousValue;
+            }
+        }
+
+        data{{ form.vars.id }}.field.addEventListener('input', function (event) {
+            handleValue{{ form.vars.id }}(event);
+        });
+    </script>
+{% endblock %}
