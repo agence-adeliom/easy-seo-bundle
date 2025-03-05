@@ -41,9 +41,9 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('seo_metas', \Closure::fromCallable(fn (\Adeliom\EasySeoBundle\Entity\SEO $seo) => $this->renderSeoMetas($seo))),
-            new TwigFunction('seo_title', \Closure::fromCallable(fn ($seo) => $this->renderSeoTitle($seo))),
-            new TwigFunction('seo_breadcrumb', \Closure::fromCallable(fn () => $this->renderBreadcrumb())),
+            new TwigFunction('seo_metas', $this->renderSeoMetas(...)),
+            new TwigFunction('seo_title', $this->renderSeoTitle(...)),
+            new TwigFunction('seo_breadcrumb', $this->renderBreadcrumb(...)),
         ];
     }
 
