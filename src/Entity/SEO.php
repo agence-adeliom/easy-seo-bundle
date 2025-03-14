@@ -15,16 +15,16 @@ class SEO implements \Stringable
     public ?string $description = null;
 
     #[ORM\Column(nullable: true)]
-    public ?string $keywords;
+    public ?string $keywords = null;
 
     #[ORM\Column(nullable: true)]
-    public ?string $cannonical;
+    public ?string $cannonical = null;
 
     #[ORM\Column(type: 'easy_media_type', nullable: true)]
-    public Media|string|null $cover;
+    public Media|string|null $cover = null;
 
     #[ORM\Column(nullable: true)]
-    public ?string $key;
+    public ?string $key = null;
 
     #[ORM\Column(type: \Doctrine\DBAL\Types\Types::BOOLEAN, nullable: true)]
     public ?bool $sitemap = true;
@@ -37,6 +37,6 @@ class SEO implements \Stringable
 
     public function __toString(): string
     {
-        return $this->title;
+        return (string) $this->title;
     }
 }

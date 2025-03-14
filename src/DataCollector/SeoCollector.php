@@ -63,11 +63,9 @@ final class SeoCollector extends AbstractDataCollector
         }
 
         $uri = $request->getPathInfo();
-        $match = array_filter($this->ignore, static function ($ignore) use ($uri) {
-            return preg_match('{'.$ignore.'}', rawurldecode($uri));
-        });
+        $match = array_filter($this->ignore, static fn($ignore) => preg_match('{'.$ignore.'}', rawurldecode($uri)));
 
-        if (!empty($match) || in_array($request->attributes->get('_route'), $this->ignore)) {
+        if ($match !== [] || in_array($request->attributes->get('_route'), $this->ignore)) {
             $this->data['ignored'] = true;
             return;
         }
