@@ -19,7 +19,7 @@ class BreadcrumbCollection
     /**
      * Adds new simple breadcrumb item. Leave target empty to create a breadcrumb item without a link.
      */
-    public function addSimpleItem(string $linkName, string $target = null, ?object $object = null): void
+    public function addSimpleItem(string $linkName, ?string $target = null, ?object $object = null): void
     {
         $this->items[] = ['linkName' => $linkName, 'target' => $target, 'object' => $object];
     }
