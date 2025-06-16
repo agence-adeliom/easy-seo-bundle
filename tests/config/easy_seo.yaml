@@ -1,0 +1,8 @@
+easy_seo:
+  title:
+    suffix: TEST
+    separator: |
+  breadcrumbs:
+    class: breadcrumb
+  enable_profiler: false
+  ignore_profiler: []
