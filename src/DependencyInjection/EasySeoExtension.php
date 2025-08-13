@@ -19,7 +19,7 @@ class EasySeoExtension extends Extension implements PrependExtensionInterface
             $container->setParameter('easy_seo.'.$key, $value);
         }
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
     }
 
