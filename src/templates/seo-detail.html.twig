@@ -1,6 +1,3 @@
-</dd>
-</div>
-
 <div class="data-row field-seo"><dt>Titre</dt><dd>{{ field.value.title ?: include(ea.templatePath('label/null')) }}</dd></div>
 <div class="data-row field-seo"><dt>Couverture</dt><dd>
         {% if field.value.cover %}
@@ -26,16 +23,3 @@
             {{ (field.value.sitemap == true ? 'label.true' : 'label.false')|trans({}, "EasyAdminBundle") }}
         </span>
     </dd></div>
-
-
-<div class="data-row field-seo">
-<dd>
-
-
-<style>
-    dl.datalist > .field-seo:first-of-type{display: none}
-    dl.datalist > .field-seo:nth-child(2) {
-        box-shadow: inset 0 -1px var(--datalist-border-color),inset 0 1px var(--datalist-border-color);
-    }
-    dl.datalist > .field-seo:last-of-type{display: none}
-</style>

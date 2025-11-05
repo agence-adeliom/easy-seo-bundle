@@ -146,5 +146,6 @@ $dispatcher->addListener('easyseo.breadcrumb', function (Event $event) {
 ## Authors
 
 - [@arnaud-ritti](https://github.com/arnaud-ritti)
+- [@jeandaviddaviet](https://github.com/JeanDavidDaviet)
 
 
