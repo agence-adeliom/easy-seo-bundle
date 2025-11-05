@@ -1,0 +1,51 @@
+{
+    "name": "league/flysystem-bundle",
+    "description": "Symfony bundle integrating Flysystem into Symfony 5.4+ applications",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Titouan Galopin",
+            "email": "galopintitouan@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "League\\FlysystemBundle\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\League\\FlysystemBundle\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "league/flysystem": "^3.0",
+        "symfony/config": "^5.4|^6.0",
+        "symfony/deprecation-contracts": "^2.1|^3",
+        "symfony/http-kernel": "^5.4|^6.0",
+        "symfony/dependency-injection": "^5.4|^6.0",
+        "symfony/options-resolver": "^5.4|^6.0"
+    },
+    "require-dev": {
+        "league/flysystem-async-aws-s3": "^3.1",
+        "league/flysystem-aws-s3-v3": "^3.1",
+        "league/flysystem-azure-blob-storage": "^3.1",
+        "league/flysystem-ftp": "^3.1",
+        "league/flysystem-google-cloud-storage": "^3.1",
+        "league/flysystem-memory": "^3.1",
+        "league/flysystem-sftp-v3": "^3.1",
+        "symfony/dotenv": "^5.4|^6.0",
+        "symfony/framework-bundle": "^5.4|^6.0",
+        "symfony/phpunit-bridge": "^5.4|^6.0",
+        "symfony/var-dumper": "^5.4|^6.0",
+        "symfony/yaml": "^5.4|^6.0"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    }
+}

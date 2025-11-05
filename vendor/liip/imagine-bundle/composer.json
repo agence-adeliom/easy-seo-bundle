@@ -1,0 +1,77 @@
+{
+    "name": "liip/imagine-bundle",
+    "type": "symfony-bundle",
+    "description": "This bundle provides an image manipulation abstraction toolkit for Symfony-based projects.",
+    "keywords": [ "imagine", "image", "manipulation", "pictures", "photos", "transformation", "bundle", "symfony", "liip" ],
+    "homepage": "https://www.liip.ch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Liip and other contributors",
+            "homepage": "https://github.com/liip/LiipImagineBundle/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Liip\\ImagineBundle\\": ""
+        },
+        "exclude-from-classmap": [ "/Tests/" ]
+    },
+    "require": {
+        "php": "^7.2|^8.0",
+        "ext-mbstring": "*",
+        "imagine/imagine": "^1.3.2",
+        "symfony/filesystem": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/finder": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/framework-bundle": "^3.4.23|^4.4|^5.3|^6.0|^7.0",
+        "symfony/mime": "^4.4|^5.3|^6.0|^7.0",
+        "symfony/options-resolver": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/process": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "twig/twig": "^1.44|^2.9|^3.0"
+    },
+    "require-dev": {
+        "ext-gd": "*",
+        "amazonwebservices/aws-sdk-for-php": "^1.0",
+        "aws/aws-sdk-php": "^2.4|^3.0",
+        "doctrine/cache": "^1.11|^2.0",
+        "doctrine/persistence": "^1.3|^2.0",
+        "enqueue/enqueue-bundle": "^0.9|^0.10",
+        "league/flysystem": "^1.0|^2.0|^3.0",
+        "phpstan/phpstan": "^1.10.0",
+        "psr/cache": "^1.0|^2.0|^3.0",
+        "psr/log": "^1.0",
+        "symfony/asset": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/browser-kit": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/cache": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/console": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/dependency-injection": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/form": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/messenger": "^4.4|^5.3|^6.0|^7.0",
+        "symfony/phpunit-bridge": "^7.0.2",
+        "symfony/templating": "^3.4|^4.4|^5.3|^6.0",
+        "symfony/validator": "^3.4|^4.4|^5.3|^6.0|^7.0",
+        "symfony/yaml": "^3.4|^4.4|^5.3|^6.0|^7.0"
+    },
+    "suggest": {
+        "ext-exif": "required to read EXIF metadata from images",
+        "ext-json": "required to read JSON manifest versioning",
+        "ext-gd": "required to use gd driver",
+        "ext-gmagick": "required to use gmagick driver",
+        "ext-imagick": "required to use imagick driver",
+        "ext-mongodb": "required for mongodb components",
+        "alcaeus/mongo-php-adapter": "required for mongodb components",
+        "amazonwebservices/aws-sdk-for-php": "required to use AWS version 1 cache resolver",
+        "aws/aws-sdk-php": "required to use AWS version 2/3 cache resolver",
+        "doctrine/mongodb-odm": "required to use mongodb-backed doctrine components",
+        "enqueue/enqueue-bundle": "^0.9 add if you like to process images in background",
+        "league/flysystem": "required to use FlySystem data loader or cache resolver",
+        "monolog/monolog": "A psr/log compatible logger is required to enable logging",
+        "rokka/imagine-vips": "required to use 'vips' driver",
+        "symfony/asset": "If you want to use asset versioning",
+        "symfony/messenger": "If you like to process images in background",
+        "symfony/templating": "required to use deprecated Templating component instead of Twig"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,46 @@
+<?php
+
+namespace EasyCorp\Bundle\EasyAdminBundle\Field;
+
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
+
+/**
+ * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ */
+final class ColorField implements FieldInterface
+{
+    use FieldTrait;
+
+    public const OPTION_SHOW_SAMPLE = 'showSample';
+    public const OPTION_SHOW_VALUE = 'showValue';
+
+    /**
+     * @param string|false|null $label
+     */
+    public static function new(string $propertyName, $label = null): self
+    {
+        return (new self())
+            ->setProperty($propertyName)
+            ->setLabel($label)
+            ->setTemplateName('crud/field/color')
+            ->setFormType(ColorType::class)
+            ->addCssClass('field-color')
+            ->setCustomOption(self::OPTION_SHOW_SAMPLE, true)
+            ->setCustomOption(self::OPTION_SHOW_VALUE, false);
+    }
+
+    public function showSample(bool $isShown = true): self
+    {
+        $this->setCustomOption(self::OPTION_SHOW_SAMPLE, $isShown);
+
+        return $this;
+    }
+
+    public function showValue(bool $isShown = true): self
+    {
+        $this->setCustomOption(self::OPTION_SHOW_VALUE, $isShown);
+
+        return $this;
+    }
+}

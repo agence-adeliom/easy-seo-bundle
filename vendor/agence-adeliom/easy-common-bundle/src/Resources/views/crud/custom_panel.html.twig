@@ -1,0 +1,64 @@
+{% block ea_crud_widget_panels %}
+    {% for panel_name, panel_config in ea_crud_form.form_panels|filter(panel_config => not panel_config.form_tab or panel_config.form_tab == tab_name) %}
+        {% set panel_has_header = panel_config.label|default(false) or panel_config.icon|default(false) or panel_config.help|default(false) %}
+
+        {% set collapsible = panel_config.collapsible %}
+        {% set collapsed = panel_config.collapsed %}
+        {% set fields = form|filter(field => 'hidden' not in field.vars.block_prefixes and field.vars.ea_crud_form.form_panel == panel_name) %}
+        {% set fields = fields|filter(field => not field.vars.ea_crud_form.form_tab or field.vars.ea_crud_form.form_tab == tab_name) %}
+
+        {% if fields|length %}
+        <div class="{{ panel_config.css_class ?? '' }}">
+            <div class="form-panel overflow-visible">
+                {% if panel_has_header %}
+                    <div class="form-panel-header {{ collapsible ? 'collapsible' }} {{ panel_config.help|default(false) is not empty ? 'with-help' }}">
+                        <div class="form-panel-title">
+                            <a {% if not collapsible %}
+                                href="#" class="not-collapsible fs-5 fw-normal"
+                            {% else %}
+                                href="#content-{{ panel_name }}" data-bs-toggle="collapse"
+                                class="form-panel-collapse fs-5 fw-normal {{ collapsed ? 'collapsed' }}"
+                                aria-expanded="{{ collapsed ? 'false' : 'true' }}" aria-controls="content-{{ panel_name }}"
+                            {% endif %}
+                            >
+                                {% if collapsible %}
+                                    <i class="fas fw fa-chevron-right form-panel-collapse-marker"></i>
+                                {% endif %}
+
+                                {% if panel_config.icon|default(false) %}
+                                    <i class="form-panel-icon {{ panel_config.icon }}"></i>
+                                {% endif %}
+                                {{ panel_config.label|raw|trans }}
+                            </a>
+
+                            {% if panel_config.help|default(false) %}
+                                <div class="form-panel-help">{{ panel_config.help|raw|trans }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div id="content-{{ panel_name }}" class="form-panel-body {{ not panel_has_header ? 'without-header' }} {{ collapsible ? 'collapse' }} {{ not collapsed ? 'show'}}">
+                    <div class="row">
+                        {% for field in fields %}
+                            {% if not field.vars.ea_crud_form.form_tab or field.vars.ea_crud_form.form_tab == tab_name %}
+                                {{ form_row(field) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            {% for field in form|filter(field => 'hidden' not in field.vars.block_prefixes and field.vars.ea_crud_form.form_panel == panel_name and not field.vars.ea_crud_form.form_tab) %}
+                {% if not field.vars.ea_crud_form.form_tab or field.vars.ea_crud_form.form_tab == tab_name %}
+                    {{ form_row(field) }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        {% for field in form|filter(field => 'hidden' not in field.vars.block_prefixes  and not field.vars.ea_crud_form.form_tab) %}
+            {{ form_row(field) }}
+        {% endfor %}
+    {% endfor %}
+{% endblock ea_crud_widget_panels %}
