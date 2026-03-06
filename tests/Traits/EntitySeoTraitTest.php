@@ -1,34 +1,30 @@
 <?php
-declare(strict_types=1);
 
 namespace Adeliom\EasySeoBundle\Tests\Traits;
 
 use Adeliom\EasySeoBundle\Entity\SEO;
 use Adeliom\EasySeoBundle\Traits\EntitySeoTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(\Adeliom\EasySeoBundle\Traits\EntitySeoTrait::class)]
 final class EntitySeoTraitTest extends TestCase
 {
-    private function getEntity(): object
+    public function testTraitInitializesAndReplacesEmbeddedSeoObject(): void
     {
-        return new class() {
-            use EntitySeoTrait;
-        };
-    }
+        $entity = new EntityWithSeo();
 
-    public function testDefaultSeo(): void
-    {
-        $entity = $this->getEntity();
         self::assertInstanceOf(SEO::class, $entity->getSEO());
-    }
 
-    public function testSetSeo(): void
-    {
-        $entity = $this->getEntity();
         $seo = new SEO();
-        $seo->title = 'Test';
+        $seo->title = 'Replacement';
         $entity->setSEO($seo);
 
-        self::assertSame('Test', $entity->getSEO()->title);
+        self::assertSame($seo, $entity->getSEO());
     }
+}
+
+final class EntityWithSeo
+{
+    use EntitySeoTrait;
 }

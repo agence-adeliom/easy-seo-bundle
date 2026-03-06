@@ -3,8 +3,10 @@
 namespace Adeliom\EasySeoBundle\Twig;
 
 use Adeliom\EasySeoBundle\Entity\SEO;
+use Adeliom\EasySeoBundle\Event\BreadcrumbEvent;
+use Adeliom\EasySeoBundle\Event\RenderMetaEvent;
+use Adeliom\EasySeoBundle\Event\TitleEvent;
 use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -57,13 +59,9 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
 
     public function renderBreadcrumb(): Markup
     {
-        $event = new GenericEvent(null, ['items' => $this->breadcrumb->getItems()]);
-        /**
-         * @var GenericEvent $result;
-         */
-        $result = $this->eventDispatcher->dispatch($event, 'easyseo.breadcrumb');
+        $result = $this->eventDispatcher->dispatch(new BreadcrumbEvent($this->breadcrumb->getItems()));
 
-        return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ['data' => $result->getArgument('items')]), 'UTF-8');
+        return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ['data' => $result->getItems()]), 'UTF-8');
     }
 
     public function renderSeoTitle($seo): string
@@ -81,23 +79,15 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
             $title = sprintf('%s %s %s', $title, $this->titleConfig['separator'], $this->titleConfig['suffix']);
         }
 
-        $event = new GenericEvent(null, ['title' => $title]);
-        /**
-         * @var GenericEvent $result;
-         */
-        $result = $this->eventDispatcher->dispatch($event, 'easyseo.title');
+        $result = $this->eventDispatcher->dispatch(new TitleEvent($title));
 
-        return $result->getArgument('title') ?: $title;
+        return $result->getTitle() ?: $title;
     }
 
     public function renderSeoMetas(SEO $seo): Markup
     {
-        $event = new GenericEvent(null, ['datas' => $seo]);
-        /**
-         * @var GenericEvent $result;
-         */
-        $result = $this->eventDispatcher->dispatch($event, 'easyseo.render_meta');
+        $result = $this->eventDispatcher->dispatch(new RenderMetaEvent($seo));
 
-        return new Markup($this->twig->render('@EasySeo/block-metas.html.twig', ['data' => ($result->getArgument('datas') ?: $seo)]), 'UTF-8');
+        return new Markup($this->twig->render('@EasySeo/block-metas.html.twig', ['data' => $result->getSeo()]), 'UTF-8');
     }
 }
