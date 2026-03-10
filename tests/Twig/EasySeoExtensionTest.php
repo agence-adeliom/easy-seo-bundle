@@ -10,7 +10,8 @@ use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
 use Adeliom\EasySeoBundle\Twig\EasySeoExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Twig\Environment;
 use Twig\Markup;
 use Twig\TwigFunction;
@@ -22,7 +23,7 @@ final class EasySeoExtensionTest extends TestCase
     {
         $extension = new EasySeoExtension(
             $this->createMock(Environment::class),
-            $this->createMock(EventDispatcherInterface::class),
+            new EventDispatcher(),
             new BreadcrumbCollection(),
             ['separator' => '|', 'suffix' => 'Adeliom'],
             ['class' => 'breadcrumb']
@@ -41,16 +42,10 @@ final class EasySeoExtensionTest extends TestCase
 
     public function testRenderSeoTitleAppliesSuffixAndDispatcherOverride(): void
     {
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher
-            ->expects(self::once())
-            ->method('dispatch')
-            ->with(self::isInstanceOf(TitleEvent::class))
-            ->willReturnCallback(function (TitleEvent $event): TitleEvent {
-                $event->setTitle('Overridden title');
-
-                return $event;
-            });
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener(TitleEvent::class, static function (TitleEvent $event): void {
+            $event->setTitle('Overridden title');
+        });
 
         $extension = new EasySeoExtension(
             $this->createMock(Environment::class),
@@ -65,17 +60,9 @@ final class EasySeoExtensionTest extends TestCase
 
     public function testRenderSeoTitleAcceptsSeoObjectWithoutSuffix(): void
     {
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher
-            ->expects(self::once())
-            ->method('dispatch')
-            ->willReturnCallback(static function (TitleEvent $event): TitleEvent {
-                return $event;
-            });
-
         $extension = new EasySeoExtension(
             $this->createMock(Environment::class),
-            $dispatcher,
+            new EventDispatcher(),
             new BreadcrumbCollection(),
             ['separator' => '|', 'suffix' => ''],
             []
@@ -109,20 +96,12 @@ final class EasySeoExtensionTest extends TestCase
                 return '<nav />';
             });
 
-        $dispatcher = $this->createMock(EventDispatcherInterface::class);
-        $dispatcher
-            ->expects(self::exactly(2))
-            ->method('dispatch')
-            ->willReturnCallback(static function (object $event): object {
-                return $event;
-            });
-
         $breadcrumbs = new BreadcrumbCollection();
         $breadcrumbs->addSimpleItem('Homepage');
 
         $extension = new EasySeoExtension(
             $twig,
-            $dispatcher,
+            new EventDispatcher(),
             $breadcrumbs,
             ['separator' => '|', 'suffix' => ''],
             ['class' => 'breadcrumb']
@@ -138,5 +117,23 @@ final class EasySeoExtensionTest extends TestCase
         self::assertSame('<meta />', (string) $metas);
         self::assertInstanceOf(Markup::class, $breadcrumb);
         self::assertSame('<nav />', (string) $breadcrumb);
+    }
+
+    public function testRenderSeoTitleKeepsLegacyGenericListenersWorking(): void
+    {
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener('easyseo.title', static function (GenericEvent $event): void {
+            $event->setArgument('title', 'Legacy title');
+        });
+
+        $extension = new EasySeoExtension(
+            $this->createMock(Environment::class),
+            $dispatcher,
+            new BreadcrumbCollection(),
+            ['separator' => '|', 'suffix' => ''],
+            []
+        );
+
+        self::assertSame('Legacy title', $extension->renderSeoTitle('Homepage'));
     }
 }

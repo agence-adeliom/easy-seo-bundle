@@ -2,11 +2,13 @@
 
 namespace Adeliom\EasySeoBundle\Twig;
 
+use Adeliom\EasyCommonBundle\Event\LegacyEventDispatcher;
 use Adeliom\EasySeoBundle\Entity\SEO;
 use Adeliom\EasySeoBundle\Event\BreadcrumbEvent;
 use Adeliom\EasySeoBundle\Event\RenderMetaEvent;
 use Adeliom\EasySeoBundle\Event\TitleEvent;
 use Adeliom\EasySeoBundle\Services\BreadcrumbCollection;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -59,7 +61,16 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
 
     public function renderBreadcrumb(): Markup
     {
-        $result = $this->eventDispatcher->dispatch(new BreadcrumbEvent($this->breadcrumb->getItems()));
+        $result = LegacyEventDispatcher::dispatchGenericEvent(
+            new BreadcrumbEvent($this->breadcrumb->getItems()),
+            $this->eventDispatcher,
+            'agence-adeliom/easy-seo-bundle',
+            'easyseo.breadcrumb',
+            static fn (BreadcrumbEvent $event): GenericEvent => new GenericEvent(null, ['items' => $event->getItems()]),
+            static function (BreadcrumbEvent $event, GenericEvent $legacyEvent): void {
+                $event->setItems($legacyEvent->getArgument('items'));
+            }
+        );
 
         return new Markup($this->twig->render('@EasySeo/block-breadcrumb.html.twig', ['data' => $result->getItems()]), 'UTF-8');
     }
@@ -79,14 +90,32 @@ class EasySeoExtension extends AbstractExtension implements GlobalsInterface
             $title = sprintf('%s %s %s', $title, $this->titleConfig['separator'], $this->titleConfig['suffix']);
         }
 
-        $result = $this->eventDispatcher->dispatch(new TitleEvent($title));
+        $result = LegacyEventDispatcher::dispatchGenericEvent(
+            new TitleEvent($title),
+            $this->eventDispatcher,
+            'agence-adeliom/easy-seo-bundle',
+            'easyseo.title',
+            static fn (TitleEvent $event): GenericEvent => new GenericEvent(null, ['title' => $event->getTitle()]),
+            static function (TitleEvent $event, GenericEvent $legacyEvent): void {
+                $event->setTitle($legacyEvent->getArgument('title'));
+            }
+        );
 
         return $result->getTitle() ?: $title;
     }
 
     public function renderSeoMetas(SEO $seo): Markup
     {
-        $result = $this->eventDispatcher->dispatch(new RenderMetaEvent($seo));
+        $result = LegacyEventDispatcher::dispatchGenericEvent(
+            new RenderMetaEvent($seo),
+            $this->eventDispatcher,
+            'agence-adeliom/easy-seo-bundle',
+            'easyseo.render_meta',
+            static fn (RenderMetaEvent $event): GenericEvent => new GenericEvent(null, ['datas' => $event->getSeo()]),
+            static function (RenderMetaEvent $event, GenericEvent $legacyEvent): void {
+                $event->setSeo($legacyEvent->getArgument('datas'));
+            }
+        );
 
         return new Markup($this->twig->render('@EasySeo/block-metas.html.twig', ['data' => $result->getSeo()]), 'UTF-8');
     }
